@@ -255,7 +255,7 @@ jobs:
         sudo mkdir -p /etc/docker/certs.d/private-registry.nginx.com
 
     - name: Create NGINX Repository Certificate for Docker
-      run: echo "${{ secrets.NGINX_REPO_CRT }}" | sudo tee /etc/docker/certs.d/private-registry.nginx.com/client.cert > /dev/null
+      run: echo "${{ secrets.NGINX_REPO_CRT }}" | base64 -d | sudo tee /etc/docker/certs.d/private-registry.nginx.com/client.cert > /dev/null
 
     - name: Create NGINX Repository Key for Docker
       run: echo "${{ secrets.NGINX_REPO_KEY }}" | sudo tee /etc/docker/certs.d/private-registry.nginx.com/client.key > /dev/null
@@ -265,7 +265,7 @@ jobs:
         sudo mkdir -p /etc/ssl/nginx
 
     - name: Save NGINX Repository Certificate for NGINX
-      run: echo "${{ secrets.NGINX_REPO_CRT }}" | sudo tee /etc/ssl/nginx/nginx-repo.crt > /dev/null
+      run: echo "${{ secrets.NGINX_REPO_CRT }}" | base64 -d | sudo tee /etc/ssl/nginx/nginx-repo.crt > /dev/null
 
     - name: Save NGINX Repository Key for NGINX
       run: echo "${{ secrets.NGINX_REPO_KEY }}" | sudo tee /etc/ssl/nginx/nginx-repo.key > /dev/null
