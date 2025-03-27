@@ -5,7 +5,7 @@ on:
       - destroy-nic-napv5
   pull_request:
 env:
-  AWS_REGION: us-east-1
+  AWS_REGION: ap-south-1
 jobs:
   terraform_arcadia:
     name: "Destroy Arcadia WebApp"
@@ -249,7 +249,7 @@ jobs:
       - name: Set Bucket Name
         id: set_bucket
         run: |
-          echo "bucket_name= your-unique-bucket-name" >> $GITHUB_OUTPUT
+          echo "bucket_name= hk-nic-nap-tf-s3b" >> $GITHUB_OUTPUT
 
       - name: Nuclear S3 Bucket Deletion
         run: |

@@ -96,17 +96,17 @@ This workflow requires the following secrets to be configured in your GitHub rep
 Rename `infra/terraform.tfvars.examples` to `infra/terraform.tfvars` and add the following data:
   * project_prefix  = "Your project identifier name in **lower case** letters only - this will be applied as a prefix to all assets"
   * resource_owner = "Your-name"
-  * aws_region     = "AWS Region" ex. us-east-1
-  * azs            = ["us-east-1a", "us-east1b"] - Change to Correct Availability Zones based on selected Region
+  * aws_region     = "AWS Region" ex. ap-south-1
+  * azs            = ["ap-south-1a", "us-east1b"] - Change to Correct Availability Zones based on selected Region
 
 ### STEP 3: Modify variable.tf
 Modify the `S3/variable.tf` file inside the `S3 directory`:
-  * default     = "your-unique-bucket-name"  # Replace with your actual bucket name
+  * default     = "hk-nic-nap-tf-s3b"  # Replace with your actual bucket name
 
 ### STEP 4: Modify Backend.tf
 Modify the `Backend.tf` file in the `Infra/Backend.tf`, `eks-cluster/Backend.tf`, `Nap/Backend.tf`, `Policy/Backend.tf`, and `Arcadia/Backend.tf` directories. 
-  * bucket         = "your-unique-bucket-name"  # Your S3 bucket name
-  * region         = "your-aws-region-name"   By default us-east-1
+  * bucket         = "hk-nic-nap-tf-s3b"  # Your S3 bucket name
+  * region         = "your-aws-region-name"   By default ap-south-1
 
 ### STEP 5: Configuring `data.tf` for Remote State
 
@@ -123,7 +123,7 @@ Each `data.tf` file in the following directories needs to use the correct format
 data "terraform_remote_state" "infra" {
   backend = "s3"
   config = {
-    bucket         = "your-unique-bucket-name"   # Your S3 bucket name
+    bucket         = "hk-nic-nap-tf-s3b"   # Your S3 bucket name
     key            = "path/to/your/statefile.tfstate"  # Path to your state file
     region         = "us-west-2"                # AWS region
   }
@@ -132,7 +132,7 @@ data "terraform_remote_state" "infra" {
 ### STEP 6: Set Bucket Name
 Add the name of your S3 bucket inside the `destroy-nic-napv5` workflow file, which is located in the Terraform _S3 job:
   
-  * echo "bucket_name="your-unique-bucket-name" >> $GITHUB_OUTPUT
+  * echo "bucket_name="hk-nic-nap-tf-s3b" >> $GITHUB_OUTPUT
 
 ### STEP 7: Commit and Push
 Commit and push your build branch to your forked repo.  

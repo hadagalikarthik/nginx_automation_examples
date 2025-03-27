@@ -1,9 +1,9 @@
 data "terraform_remote_state" "infra" {
   backend = "s3"
   config = {
-    bucket =  "your-unique-bucket-name"       # Your S3 bucket name
+    bucket =  "hk-nic-nap-tf-s3b"       # Your S3 bucket name
     key    = "infra/terraform.tfstate"       # Path to infra's state file
-    region = "us-east-1"                     # AWS region
+    region = "ap-south-1"                     # AWS region
   }
 }
 
@@ -11,9 +11,9 @@ data "terraform_remote_state" "infra" {
 data "terraform_remote_state" "eks" {
   backend = "s3"
   config = {
-    bucket =  "your-unique-bucket-name"       # Your S3 bucket name
+    bucket =  "hk-nic-nap-tf-s3b"       # Your S3 bucket name
     key    = "eks-cluster/terraform.tfstate" # Path to EKS state file
-    region = "us-east-1"                     # AWS region
+    region = "ap-south-1"                     # AWS region
   }
 }
 
