@@ -4,7 +4,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_iam_role" "terraform_execution_role" {
   count = var.create_iam_resources ? 1 : 0
 
-  name               = "TerraformCIExecutionRole"
+  name               = "TerraformCIExecutionRole_HK"
   description        = "Role for basic Terraform CI/CD executions"
   max_session_duration = 3600
 
@@ -24,7 +24,7 @@ resource "aws_iam_role" "terraform_execution_role" {
 resource "aws_iam_policy" "terraform_state_access" {
   count = var.create_iam_resources ? 1 : 0
 
-  name        = "TerraformStateAccess"
+  name        = "TerraformStateAccess_HK"
   description = "Minimum permissions for S3 state management"
 
   policy = jsonencode({
