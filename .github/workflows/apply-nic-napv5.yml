@@ -318,7 +318,10 @@ jobs:
         kubectl cp ${{ github.workspace }}/policy/compiled_policy.tgz $NGINX_POD:/etc/app_protect/bundles/compiled_policy.tgz -n nginx-ingress 
 
     - name: Terraform Init
-      run: terraform init
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
+          -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
 
     - name: Terraform Plan
       run: |
