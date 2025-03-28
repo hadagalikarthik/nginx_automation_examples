@@ -27,9 +27,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform (S3 Backend)
-#        env:
-#          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
-#          AWS_REGION_INDIA: ${{ secrets.AWS_REGION_INDIA }}
+        env:
+          TF_VAR_AWS_S3_BUCKET_NAME: ${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}
+          TF_VAR_AWS_REGION: ${{ secrets.TF_VAR_AWS_REGION }}
         run: |
           terraform init
 
