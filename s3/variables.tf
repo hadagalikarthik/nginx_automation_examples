@@ -10,14 +10,12 @@ variable "create_iam_resources" {
   default     = true
 }
 
-variable "AWS_REGION" {
+variable "AWS_REGION_INDIA" {
   description = "aws region"
   type        = string
-  default     = ""
 }
 
 variable "AWS_S3_BUCKET_NAME" {
   description = "aws s3 bucket name"
   type        = string
-  default     = ""
 }
