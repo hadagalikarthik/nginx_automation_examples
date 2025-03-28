@@ -4,6 +4,8 @@ on:
     branches: apply-nic-napv5
 env:
   AWS_REGION: ap-south-1
+  TF_VAR_AWS_S3_BUCKET_NAME: ${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}
+  TF_VAR_AWS_REGION: ${{ secrets.TF_VAR_AWS_REGION }}
 jobs:
   terraform_bootstrap:
     name: "Bootstrap S3/DynamoDB"
