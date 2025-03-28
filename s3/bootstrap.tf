@@ -11,7 +11,7 @@ data "external" "s3_bucket_check" {
 
 data "external" "dynamodb_table_check" {
   program = ["bash", "-c", <<EOT
-    if aws dynamodb describe-table --table-name terraform-lock-table --region ${var.AWS_REGION} >/dev/null 2>&1; then
+    if aws dynamodb describe-table --table-name terraform-lock-table-hk --region ${var.AWS_REGION} >/dev/null 2>&1; then
       printf '{"exists":"true"}'
     else
       printf '{"exists":"false"}'
@@ -58,7 +58,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state_bucket" {
 resource "aws_dynamodb_table" "terraform_state_lock" {
   count = data.external.dynamodb_table_check.result.exists == "true" ? 0 : 1
 
-  name         = "terraform-lock-table"
+  name         = "terraform-lock-table-hk"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
