@@ -46,8 +46,8 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
         run: terraform apply -auto-approve tfplan
         env:
-          s3_bucket_name: ${{ secrets.AWS_S3_BUCKET_NAME }}
-          aws_region: ${{ secrets.AWS_REGION }}
+          TF_VAR_AWS_S3_BUCKET_NAME: ${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}
+          TF_VAR_AWS_REGION: ${{ secrets.TF_VAR_AWS_REGION }}
 
   terraform_infra:
     name: "AWS Infra"
@@ -76,8 +76,13 @@ jobs:
 
 
       - name: Initialize Terraform (S3 Backend)
+        env:
+          TF_VAR_AWS_S3_BUCKET_NAME: ${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}
+          TF_VAR_AWS_REGION: ${{ secrets.TF_VAR_AWS_REGION }}
         run: |
-          terraform init
+          terraform init \
+            -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
+            -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
