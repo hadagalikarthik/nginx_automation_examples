@@ -47,10 +47,10 @@ jobs:
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-#        env:
-#          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
-#          AWS_REGION_INDIA: ${{ secrets.AWS_REGION_INDIA }}
-        run: terraform apply -auto-approve tfplan -var "AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}" -var "AWS_REGION_INDIA=${{ secrets.AWS_REGION_INDIA }}"
+        env:
+          TF_VAR_AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          TF_VAR_AWS_REGION_INDIA: ${{ secrets.AWS_REGION_INDIA }}
+        run: terraform apply -auto-approve tfplan
 
   terraform_infra:
     name: "AWS Infra"
