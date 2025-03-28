@@ -1,6 +1,6 @@
 data "external" "s3_bucket_check" {
   program = ["bash", "-c", <<EOT
-    if aws s3api head-bucket --bucket ${var.AWS_S3_BUCKET_NAME} --region ${var.AWS_REGION_INDIA} >/dev/null 2>&1; then
+    if aws s3api head-bucket --bucket ${var.TF_VAR_AWS_S3_BUCKET_NAME} --region ${var.TF_VAR_AWS_REGION} >/dev/null 2>&1; then
       printf '{"exists":"true"}'
     else
       printf '{"exists":"false"}'
@@ -11,7 +11,7 @@ data "external" "s3_bucket_check" {
 
 data "external" "dynamodb_table_check" {
   program = ["bash", "-c", <<EOT
-    if aws dynamodb describe-table --table-name terraform-lock-table-hk --region ${var.AWS_REGION_INDIA} >/dev/null 2>&1; then
+    if aws dynamodb describe-table --table-name terraform-lock-table-hk --region ${var.TF_VAR_AWS_REGION} >/dev/null 2>&1; then
       printf '{"exists":"true"}'
     else
       printf '{"exists":"false"}'
@@ -24,7 +24,7 @@ data "external" "dynamodb_table_check" {
 resource "aws_s3_bucket" "terraform_state_bucket" {
   count = data.external.s3_bucket_check.result.exists == "true" ? 0 : 1
 
-  bucket        = var.AWS_S3_BUCKET_NAME
+  bucket        = var.TF_VAR_AWS_S3_BUCKET_NAME
   force_destroy = true
 
   tags = {

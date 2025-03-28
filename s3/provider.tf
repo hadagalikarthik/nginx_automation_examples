@@ -1,5 +1,5 @@
 # AWS Provider Configuration
 provider "aws" {
-  region = var.AWS_REGION
+  region = var.TF_VAR_AWS_REGION
 }
 
