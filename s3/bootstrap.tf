@@ -58,7 +58,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state_bucket" {
 resource "aws_dynamodb_table" "terraform_state_lock" {
   count = data.external.dynamodb_table_check.result.exists == "true" ? 0 : 1
 
-  name         = "terraform-lock-table-hk"
+  name         = "terraform-lock-table"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
