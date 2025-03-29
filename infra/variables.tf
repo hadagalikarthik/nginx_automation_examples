@@ -11,6 +11,12 @@ variable "AWS_REGION" {
   default     = ""
 }
 
+variable "AWS_S3_BUCKET_NAME" {
+  description = "aws s3 bucket name"
+  type        = string
+  default     = ""
+}
+
 # variable "aws_region" {
 #   description = "aws region"
 #   type        = string
@@ -33,10 +39,15 @@ variable "cidr" {
   }
 }
 
-variable "azs" {
-  description = "Availability Zones"
-  type        = list
+# variable "azs" {
+#   description = "Availability Zones"
+#   type        = list
+# }
+
+locals {
+  azs = ["${var.AWS_REGION}a", "${var.AWS_REGION}b"]
 }
+
 variable "create_nat_gateway" {
   type        = bool
   default     = false
