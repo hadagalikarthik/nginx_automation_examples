@@ -379,4 +379,4 @@ jobs:
             exit 1
           else
             echo "IAM Role deleted successfully"
-          fi      
+          fi
