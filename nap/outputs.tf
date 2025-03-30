@@ -13,4 +13,3 @@ output "nap_deployment_name" {
     sensitive = true
 }
 
-
