@@ -6,7 +6,7 @@ on:
 env:
   TF_VAR_GCP_BUCKET_NAME: ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}
   TF_VAR_GCP_REGION: ${{ secrets.TF_VAR_GCP_REGION }}
-  TF_VAR_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
+  TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
 
 jobs:
   terraform_bootstrap:
