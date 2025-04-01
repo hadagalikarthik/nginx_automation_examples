@@ -20,9 +20,7 @@ resource "google_firestore_document" "terraform_lock" {
   collection  = "terraform-locks"
   document_id = "LockID"  # Unique lock identifier
 
-  fields = {
-    LockID = { string_value = "terraform-lock" }
-  }
+  fields = "{LockID={string_value='terraform-lock'}}"
 
   lifecycle {
     prevent_destroy = true  # Prevent accidental deletion of the lock document
