@@ -7,6 +7,7 @@ env:
   TF_VAR_GCP_BUCKET_NAME: ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}
   TF_VAR_GCP_REGION: ${{ secrets.TF_VAR_GCP_REGION }}
   TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
+  TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
 #jobs:
 #  terraform_bootstrap:
@@ -91,7 +92,7 @@ jobs:
       - name: Set up Google Cloud Credentials
         uses: google-github-actions/setup-gcloud@v2
         with:
-          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+          credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
