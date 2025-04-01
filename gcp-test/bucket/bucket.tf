@@ -21,9 +21,7 @@ resource "google_firestore_document" "terraform_lock" {
   document_id = "LockID"  # Unique lock identifier
 
   fields = {
-    "LockID" = {
-      "stringValue" = "terraform-lock"  # Document content to represent the lock
-    }
+    LockID = "terraform-lock"  # Document content to represent the lock
   }
 
   lifecycle {
