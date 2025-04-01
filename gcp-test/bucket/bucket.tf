@@ -15,10 +15,10 @@ resource "google_storage_bucket" "bucket" {
 resource "google_firestore_document" "terraform_lock" {
   # count = local.firestore_exists ? 0 : 1
 
-  project       = var.GCP_PROJECT_ID
-  database      = "(default)"  # Default Firestore database
-  collection    = "terraform-lock-table"
-  document_id   = "LockID"  # The LockID used for state locking
+  project     = var.GCP_PROJECT_ID
+  database    = "(default)"  # Default Firestore database
+  collection  = "terraform-locks"
+  document_id = "LockID"  # Unique lock identifier
 
   fields = {
     "LockID" = {
@@ -27,7 +27,7 @@ resource "google_firestore_document" "terraform_lock" {
   }
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = true  # Prevent accidental deletion of the lock document
   }
 }
 #
