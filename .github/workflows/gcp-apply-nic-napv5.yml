@@ -1,4 +1,3 @@
-#--------------
 name: "Create GCP Bucket"
 on:
   push:
@@ -9,82 +8,13 @@ env:
   TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
   TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-#jobs:
-#  terraform_bootstrap:
-#    name: "Bootstrap GCP Bucket"
-#    runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ./gcp-test
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#
-#      - name: Set up GCP Credentials
-#        uses: google-github-actions/setup-gcloud@v2
-#        with:
-#          project_id: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
-#          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-#
-#      - name: Setup Terraform
-#        uses: hashicorp/setup-terraform@v3
-#
-#      - name: Initialize Terraform (GCP Backend)
-#        run: |
-#          terraform init
-#
-#      - name: Terraform Plan
-#        run: terraform plan -no-color -input=false -out=tfplan
-#        id: plan
-#        if: github.event_name == 'pull_request'
-##        run: terraform plan -no-color -input=false
-#        continue-on-error: true
-#
-#      - uses: actions/github-script@v6
-#        if: github.event_name == 'pull_request'
-#        env:
-#          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          script: |
-#            const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-#            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-#            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-#            <details><summary>Show Plan</summary>
-#            \`\`\`\n
-#            ${process.env.PLAN}
-#            \`\`\`
-#            </details>
-#            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-#            github.rest.issues.createComment({
-#              issue_number: context.issue.number,
-#              owner: context.repo.owner,
-#              repo: context.repo.repo,
-#              body: output
-#            })
-#
-#      - name: Check for Changes
-#        id: check_changes
-#        run: |
-#          if grep -q "No changes." <(terraform show -no-color tfplan); then
-#            echo "has_changes=false" >> $GITHUB_OUTPUT
-#          else
-#            echo "has_changes=true" >> $GITHUB_OUTPUT
-#          fi
-#
-#      - name: Terraform Apply
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/gcp-apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-#        run: terraform apply -auto-approve tfplan
-
-#------
-
 jobs:
   terraform:
     name: "Create GCP Bucket"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./gcp-test
+        working-directory: ./gcp-test/bucket
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -115,3 +45,54 @@ jobs:
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/gcp-apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
         run: terraform apply -auto-approve tfplan
+
+#  terraform_infra:
+#    name: "GCP Infra"
+#    runs-on: ubuntu-latest
+#    needs:  terraform_bootstrap
+#    permissions:
+#      contents: read
+#    defaults:
+#      run:
+#        working-directory: ./infra
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v3
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+#          aws-region: ${{ secrets.TF_VAR_AWS_REGION }}
+#
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v3
+#
+#
+#      - name: Initialize Terraform (S3 Backend)
+#        run: |
+#          terraform init \
+#            -backend-config="bucket=${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}" \
+#            -backend-config="region=${{ secrets.TF_VAR_AWS_REGION }}"
+#
+#      - name: Terraform Plan
+#        if: github.event_name == 'pull_request' || github.event_name == 'push'
+#        run: |
+#          terraform plan -no-color -input=false -out=tfplan
+#          terraform show -no-color tfplan > plan.txt
+#
+#      - name: Check Changes
+#        id: check_changes
+#        run: |
+#          if grep -q "No changes." plan.txt; then
+#            echo "has_changes=false" >> $GITHUB_OUTPUT
+#          else
+#            echo "has_changes=true" >> $GITHUB_OUTPUT
+#          fi
+#
+#      - name: Terraform Apply
+#        if: github.event_name == 'push' && github.ref == 'refs/heads/apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+#        run: terraform apply -auto-approve tfplan
