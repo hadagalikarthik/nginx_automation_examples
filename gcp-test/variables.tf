@@ -9,6 +9,10 @@ variable "cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "GOOGLE_CREDENTIALS" {
+  type    = string
+}
+
 variable "GCP_PROJECT_ID" {
   type    = string
 }
