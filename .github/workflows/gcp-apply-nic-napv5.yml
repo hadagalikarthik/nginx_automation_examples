@@ -71,8 +71,7 @@ jobs:
       - name: Initialize Terraform (GCS Backend)
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}" \
-            -backend-config="credentials=${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}"
+            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
