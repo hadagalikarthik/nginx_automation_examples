@@ -81,6 +81,9 @@ jobs:
   terraform:
     name: "Create GCP Bucket"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./gcp-test
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
