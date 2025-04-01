@@ -78,7 +78,7 @@ env:
 #------
 jobs:
   terraform_infra:
-    name: "GCP Infra"
+    name: "Bootstrap GCP Bucket"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -86,6 +86,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up GCP Credentials
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
