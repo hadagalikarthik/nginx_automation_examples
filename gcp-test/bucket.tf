@@ -1,4 +1,4 @@
 resource "google_storage_bucket" "bucket" {
-  name     = var.GCP_PROJECT_ID
+  name     = var.GCP_BUCKET_NAME
   location = var.GCP_REGION
 }
