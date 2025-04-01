@@ -21,7 +21,9 @@ resource "google_firestore_document" "terraform_lock" {
   document_id   = "LockID"  # The LockID used for state locking
 
   fields = {
-    "LockID" = "terraform-lock"  # Document content to represent the lock
+    "LockID" = {
+      "stringValue" = "terraform-lock"  # Document content to represent the lock
+    }
   }
 
   lifecycle {
