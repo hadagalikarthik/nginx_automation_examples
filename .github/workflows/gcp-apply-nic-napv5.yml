@@ -68,12 +68,12 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-
       - name: Initialize Terraform (S3 Backend)
         run: |
           terraform init \
             -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
 #            -backend-config="region=${{ secrets.TF_VAR_GCP_REGION }}"
+
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
