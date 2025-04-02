@@ -72,10 +72,32 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Initialize Terraform (GCS Backend)
+      - name: Setup Terraform Backend
+        id: backend
         run: |
-          terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+          cat > backend.tf << EOF
+          terraform {
+            cloud {
+              organization = "${{ secrets.TF_CLOUD_ORGANIZATION }}"
+              workspaces {
+                name = "${{ secrets.TF_CLOUD_WORKSPACE_INFRA }}"
+              }
+            }
+      
+            backend "gcs" {
+              bucket = "${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"   # Add your GCS bucket name here
+              prefix = "terraform/infra/terraform.tfstate"
+              credentials = "${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}"  # Path to your service account key
+            }
+          }
+          EOF
+
+#      - name: Initialize Terraform (GCS Backend)
+#        run: |
+#          terraform init \
+#            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+      - name: Terraform Init
+        run: terraform init
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
