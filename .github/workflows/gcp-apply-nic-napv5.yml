@@ -76,8 +76,8 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform (GCS Backend)
-#        env:
-#          GOOGLE_APPLICATION_CREDENTIALS: ./credentials.json
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: key.json
         run: |
           terraform init \
             -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
