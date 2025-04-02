@@ -1,5 +1,3 @@
-gcloud auth application-default login
-
 provider "google" {
   credentials = var.GOOGLE_CREDENTIALS
   project     = var.GCP_PROJECT_ID
