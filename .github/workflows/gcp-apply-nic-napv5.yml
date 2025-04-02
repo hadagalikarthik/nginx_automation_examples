@@ -86,12 +86,13 @@ jobs:
           }
           EOF
 
-#      - name: Initialize Terraform (GCS Backend)
-#        run: |
-#          terraform init \
-#            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
-      - name: Terraform Init
-        run: terraform init
+      - name: Initialize Terraform (GCS Backend)
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+
+#      - name: Terraform Init
+#        run: terraform init
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
