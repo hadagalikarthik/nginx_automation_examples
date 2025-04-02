@@ -77,7 +77,7 @@ jobs:
 
       - name: Initialize Terraform (GCS Backend)
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: key.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
         run: |
           terraform init \
             -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
