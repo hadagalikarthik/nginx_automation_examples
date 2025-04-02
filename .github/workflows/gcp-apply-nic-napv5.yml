@@ -83,12 +83,6 @@ jobs:
                 name = "${{ secrets.TF_CLOUD_WORKSPACE_INFRA }}"
               }
             }
-      
-            backend "gcs" {
-              bucket = "${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"   # Add your GCS bucket name here
-              prefix = "terraform/infra/terraform.tfstate"
-              credentials = "${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}"  # Path to your service account key
-            }
           }
           EOF
 
