@@ -26,6 +26,14 @@ variable "service_account" {
   default = ""
 }
 
+variable "TF_CLOUD_ORGANIZATION"{
+  type    = string
+}
+
+variable "TF_CLOUD_WORKSPACE_INFRA"{
+  type    = string
+}
+
 variable "project_prefix" {
   type        = string
   description = "This value is inserted at the beginning of each cloud object (alpha-numeric, no special character)"
