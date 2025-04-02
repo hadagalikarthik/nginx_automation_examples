@@ -3,7 +3,7 @@ provider "google" {
 }
 
 provider "kubernetes" {
-  host                   = local.host
+  host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
   token                  = local.cluster_token
   exec {
@@ -20,7 +20,7 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    host                   = local.host
+    host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
     cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
     token                  = local.cluster_token
     exec {
