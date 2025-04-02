@@ -1,28 +1,28 @@
-# data "external" "bucket_check" {
-#   program = ["bash", "-c", <<EOT
-#     # Ensure consistent JSON output
-#     output=$(gsutil ls -b gs://${var.GCP_BUCKET_NAME} 2>&1)
-#     status=$?
-#
-#     if [ $status -eq 0 ]; then
-#       echo '{"exists":"true", "message":"Bucket exists"}'
-#     elif echo "$output" | grep -q 'No such bucket'; then
-#       echo '{"exists":"false", "message":"Bucket not found"}'
-#     else
-#       echo '{"exists":"error", "message":"'$(echo "$output" | tr -d '\n')'"}'
-#       exit 1
-#     fi
-#   EOT
-#   ]
-# }
-#
-# locals {
-#   # Handle bucket existence with error checking
-#   bucket_exists = try(
-#     data.external.bucket_check.result.exists == "true",
-#     false
-#   )
-# }
+data "external" "bucket_check" {
+  program = ["bash", "-c", <<EOT
+    # Ensure consistent JSON output
+    output=$(gsutil ls -b gs://${var.GCP_BUCKET_NAME} 2>&1)
+    status=$?
+
+    if [ $status -eq 0 ]; then
+      echo '{"exists":"true", "message":"Bucket exists"}'
+    elif echo "$output" | grep -q 'No such bucket'; then
+      echo '{"exists":"false", "message":"Bucket not found"}'
+    else
+      echo '{"exists":"error", "message":"'$(echo "$output" | tr -d '\n')'"}'
+      exit 1
+    fi
+  EOT
+  ]
+}
+
+locals {
+  # Handle bucket existence with error checking
+  bucket_exists = try(
+    data.external.bucket_check.result.exists == "true",
+    false
+  )
+}
 
 resource "google_storage_bucket" "bucket" {
   # count = local.bucket_exists ? 0 : 1

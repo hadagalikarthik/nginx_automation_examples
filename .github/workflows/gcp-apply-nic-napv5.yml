@@ -11,42 +11,42 @@ env:
   TF_CLOUD_WORKSPACE_INFRA: ${{ secrets.TF_CLOUD_WORKSPACE_INFRA }}
 
 jobs:
-  terraform_bootstrap:
-    name: "Create GCP Bucket"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./gcp-test/bucket
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Google Cloud Credentials
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Initialize Terraform
-        run: terraform init
-
-      - name: Terraform Plan
-        run: terraform plan -no-color -input=false -out=tfplan
-
-      - name: Check for Changes
-        id: check_changes
-        run: |
-          if grep -q "No changes." <(terraform show -no-color tfplan); then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Terraform Apply
-        if: github.event_name == 'push' && github.ref == 'refs/heads/gcp-apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-        run: terraform apply -auto-approve tfplan
+#  terraform_bootstrap:
+#    name: "Create GCP Bucket"
+#    runs-on: ubuntu-latest
+#    defaults:
+#      run:
+#        working-directory: ./gcp-test/bucket
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Google Cloud Credentials
+#        uses: google-github-actions/setup-gcloud@v2
+#        with:
+#          credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
+#
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v3
+#
+#      - name: Initialize Terraform
+#        run: terraform init
+#
+#      - name: Terraform Plan
+#        run: terraform plan -no-color -input=false -out=tfplan
+#
+#      - name: Check for Changes
+#        id: check_changes
+#        run: |
+#          if grep -q "No changes." <(terraform show -no-color tfplan); then
+#            echo "has_changes=false" >> $GITHUB_OUTPUT
+#          else
+#            echo "has_changes=true" >> $GITHUB_OUTPUT
+#          fi
+#
+#      - name: Terraform Apply
+#        if: github.event_name == 'push' && github.ref == 'refs/heads/gcp-apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+#        run: terraform apply -auto-approve tfplan
 
   terraform_infra:
     name: "GCP Infra"
@@ -91,8 +91,8 @@ jobs:
 #          terraform init \
 #            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
 
-#      - name: Terraform Init
-#        run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
