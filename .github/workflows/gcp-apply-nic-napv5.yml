@@ -74,7 +74,7 @@ jobs:
           terraform init \
             -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
         env:
-          TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
+          export GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request' || github.event_name == 'push'
