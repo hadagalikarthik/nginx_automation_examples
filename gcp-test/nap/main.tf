@@ -19,7 +19,7 @@ provider "google" {
 # }
 
 provider "kubernetes" {
-  host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
+  host                   = data.tfe_outputs.gke.values.instance_group_urls
   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
   token                  = local.cluster_token
 
@@ -55,7 +55,7 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
+    host                   = data.tfe_outputs.gke.values.instance_group_urls
     cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
     token                  = local.cluster_token
 
@@ -89,7 +89,7 @@ provider "helm" {
 # }
 
 provider "kubectl" {
-    host                    = local.host
+    host                    = data.tfe_outputs.gke.values.instance_group_urls
     cluster_ca_certificate  = base64decode(local.cluster_ca_certificate)
     token                   = local.cluster_token
     load_config_file        = false
