@@ -2,35 +2,70 @@ provider "google" {
     region                  = local.region
 }
 
+# provider "kubernetes" {
+#   host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
+#   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
+#   token                  = local.cluster_token
+#   exec {
+#     api_version = "client.authentication.k8s.io/v1beta1"
+#     command     = "aws"
+#     args = [
+#       "eks",
+#       "get-token",
+#       "--cluster-name",
+#       local.cluster_name
+#     ]
+#   }
+# }
+
 provider "kubernetes" {
   host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
   token                  = local.cluster_token
+
+  # Optional: Using exec for kubectl authentication
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
+    command     = "gcloud"
     args = [
-      "eks",
-      "get-token",
-      "--cluster-name",
-      local.cluster_name
+      "container", "clusters", "get-credentials",
+      local.cluster_name,  # Assuming 'local.cluster_name' is set
+      "--region", local.region  # Assuming 'local.cluster_region' is set
     ]
   }
 }
+
+# provider "helm" {
+#   kubernetes {
+#     host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
+#     cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
+#     token                  = local.cluster_token
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       command     = "aws"
+#       args = [
+#         "eks",
+#         "get-token",
+#         "--cluster-name",
+#         local.cluster_name
+#       ]
+#     }
+#   }
+# }
 
 provider "helm" {
   kubernetes {
     host                   = data.tfe_outputs.gke.values.kubernetes_cluster_host
     cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
     token                  = local.cluster_token
+
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
+      command     = "gcloud"
       args = [
-        "eks",
-        "get-token",
-        "--cluster-name",
-        local.cluster_name
+        "container", "clusters", "get-credentials",
+        local.cluster_name,  # Cluster name
+        "--region", local.region  # Cluster region
       ]
     }
   }
