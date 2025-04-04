@@ -310,18 +310,16 @@ jobs:
         echo "GCP_REGION=$TF_VAR_GCP_REGION" >> $GITHUB_ENV
       working-directory: ./gcp-test/gke
 
-    - name: Install kubectl
-      run: |
-        curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
-        chmod +x ./kubectl
-        sudo mv ./kubectl /usr/local/bin/kubectl
+#    - name: Install kubectl
+#      run: |
+#        curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
+#        chmod +x ./kubectl
+#        sudo mv ./kubectl /usr/local/bin/kubectl
 
     - name: Install gke-gcloud-auth-plugin
       run: |
-        curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-421.0.0-linux-x86_64.tar.gz
-        tar -xvzf google-cloud-sdk-421.0.0-linux-x86_64.tar.gz
-        ./google-cloud-sdk/install.sh
-        ./google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin
+        sudo apt-get update
+        sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
 
     - name: Configure kubectl for GKE
       run: |
