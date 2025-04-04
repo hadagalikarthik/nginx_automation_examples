@@ -32,3 +32,7 @@ output "instance_group_urls" {
   # value = google_container_cluster.primary.node_pool[0].instance_group_urls
   value = google_container_node_pool.primary_nodes.instance_group_urls
 }
+
+output "kubernetes_api_server_url" {
+  value = "https://${google_container_cluster.primary.endpoint}"
+}
