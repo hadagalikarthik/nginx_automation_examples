@@ -310,27 +310,30 @@ jobs:
         echo "GCP_REGION=$TF_VAR_GCP_REGION" >> $GITHUB_ENV
       working-directory: ./gcp-test/gke
 
-    - name: Print OS Information
-      run: uname -a  # Print the full system information
+#    - name: Print OS Information
+#      run: uname -a  # Print the full system information
 
-#    - name: Install kubectl
-#      run: |
-#        curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
-#        chmod +x ./kubectl
-#        sudo mv ./kubectl /usr/local/bin/kubectl
+    - name: Install kubectl
+      run: |
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin/kubectl
 
-#    - name: Install gke-gcloud-auth-plugin
-#      run: |
-#        sudo apt-get update
-#        sudo apt-get install google-cloud-cli
-#        sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+    - name: Install gke-gcloud-auth-plugin
+      run: |
+        sudo apt-get update
+        sudo apt-get install apt-transport-https ca-certificates gnupg curl
+        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+        sudo apt-get update && sudo apt-get install google-cloud-cli
+        sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
 
     - name: Configure kubectl for GKE
       run: |
         gcloud container clusters get-credentials hk-nic-nap-gke --region $GCP_REGION --project f5-gcs-5611-mktg-secsols
 
-#    - name: Verify kubectl connectivity
-#      run: kubectl get nodes -n nginx-ingress
+    - name: Verify kubectl connectivity
+      run: kubectl get nodes -n nginx-ingress
 
     - name: Install Docker and Docker Compose
       run: |
