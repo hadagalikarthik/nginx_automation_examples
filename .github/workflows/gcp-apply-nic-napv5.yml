@@ -302,11 +302,7 @@ jobs:
     - name: Authenticate to Google Cloud
       run: |
         echo "$TF_VAR_GOOGLE_CREDENTIALS" | gcloud auth activate-service-account --key-file=-
-#        gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
         gcloud config set project $TF_VAR_GCP_PROJECT_ID  # Optional, if needed
-#      env:
-#        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-#        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}  # Optional, if the project ID is stored as a secret
 
     - name: Fetch GKE Cluster Name and Region
       run: |
