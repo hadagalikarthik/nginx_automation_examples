@@ -1,5 +1,5 @@
 output "external_name" {
-    value = try(data.kubernetes_service_v1.nginx-service.status.0.load_balancer.0.ingress.0.hostname, null)
+    value = data.tfe_outputs.gke.values.kubernetes_api_server_url
 }
 output "external_port" {
     value = try(data.kubernetes_service_v1.nginx-service.spec.0.port.0.port, null)
