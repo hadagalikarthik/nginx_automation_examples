@@ -310,10 +310,15 @@ jobs:
         echo "GCP_REGION=$TF_VAR_GCP_REGION" >> $GITHUB_ENV
       working-directory: ./gcp-test/gke
 
+    - name: Install kubectl
+      run: |
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl"
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin/kubectl
+
     - name: Configure kubectl for GKE
       run: |
         gcloud container clusters get-credentials hk-nic-nap-gke --region $GCP_REGION --project f5-gcs-5611-mktg-secsols
-#        ${local.project_prefix}-gke
 
     - name: Verify kubectl connectivity
       run: kubectl get nodes -n nginx-ingress
