@@ -10,6 +10,8 @@ env:
   TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
   TF_CLOUD_WORKSPACE_INFRA: ${{ secrets.TF_CLOUD_WORKSPACE_INFRA }}
   TF_CLOUD_WORKSPACE_GKE: ${{ secrets.TF_CLOUD_WORKSPACE_GKE }}
+  WORKSPACE_PATH: "./gcp-test/nap"
+  nginx_jwt: ${{ secrets.NGINX_JWT }}
 
 jobs:
 #  terraform_bootstrap:
@@ -249,8 +251,7 @@ jobs:
             -var="nginx_jwt=${{ secrets.NGINX_JWT }}" \
             -var="nginx_pwd=none"
 #          terraform show -no-color tfplan > plan.txt
-        env:
-           WORKSPACE_PATH: "./gcp-test/nap"
+
 
       - name: Check Changes
         id: check_changes
