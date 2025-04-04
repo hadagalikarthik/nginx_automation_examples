@@ -301,7 +301,8 @@ jobs:
 
     - name: Fetch GKE Cluster Name and Region
       run: |
-        echo "GKE_CLUSTER_NAME=$(terraform output -raw kubernetes_cluster_name)" >> $GITHUB_ENV
+#        echo "GKE_CLUSTER_NAME=$(terraform output -raw kubernetes_cluster_name)" >> $GITHUB_ENV
+        echo "GKE_CLUSTER_NAME=data.tfe_outputs.gke.values.kubernetes_cluster_name" >> $GITHUB_ENV
         echo "GCP_REGION=$TF_VAR_GCP_REGION" >> $GITHUB_ENV
       working-directory: ./gcp-test/gke
 
