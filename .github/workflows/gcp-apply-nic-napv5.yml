@@ -318,7 +318,10 @@ jobs:
 
     - name: Install gke-gcloud-auth-plugin
       run: |
-        sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+        curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-421.0.0-linux-x86_64.tar.gz
+        tar -xvzf google-cloud-sdk-421.0.0-linux-x86_64.tar.gz
+        ./google-cloud-sdk/install.sh
+        ./google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin
 
     - name: Configure kubectl for GKE
       run: |
