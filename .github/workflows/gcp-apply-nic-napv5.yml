@@ -453,7 +453,7 @@ jobs:
     needs: terraform_policy
     defaults:
       run:
-        working-directory: ./arcadia
+        working-directory: .gcp-test/arcadia
     steps:
       - name: Checkout
         uses: actions/checkout@v4
