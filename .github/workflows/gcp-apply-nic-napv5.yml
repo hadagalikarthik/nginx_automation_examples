@@ -263,13 +263,13 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-#      - name: Terraform Apply
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/gcp-apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
-#        run: terraform apply -auto-approve -lock=false tfplan
-
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/gcp-apply-nic-napv5' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        if: github.event_name == 'push' && github.ref == 'refs/heads/gcp-apply-nic-napv5' && steps.check_changes.outputs.has_changes == 'true'
+        run: terraform apply -auto-approve -lock=false tfplan
+
+#      - name: Terraform Apply
+#        if: github.ref == 'refs/heads/gcp-apply-nic-napv5' && github.event_name == 'push'
+#        run: terraform apply -auto-approve -input=false
 
   terraform_policy:
     name: "NGINX Policy"
