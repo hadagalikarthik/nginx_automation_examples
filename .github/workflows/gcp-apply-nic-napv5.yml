@@ -14,6 +14,7 @@ env:
   WORKSPACE_PATH: "./gcp-test/nap"
   nginx_jwt: ${{ secrets.NGINX_JWT }}
 
+
 jobs:
   terraform_bootstrap:
     name: "Create GCP Bucket"
