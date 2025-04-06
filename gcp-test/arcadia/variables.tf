@@ -10,10 +10,10 @@
 #   default     = ""
 # }
 
-variable "tf_cloud_organization" {
-  type        = string
-  description = "TF cloud org (Value set in TF cloud)"
-}
+# variable "tf_cloud_organization" {
+#   type        = string
+#   description = "TF cloud org (Value set in TF cloud)"
+# }
 
 variable "GCP_REGION" {
   description = "GCP region name"
