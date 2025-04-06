@@ -1,9 +1,7 @@
 data "terraform_remote_state" "infra" {
   backend = "gcs"
   config = {
-    bucket = var.GCP_BUCKET_NAME       # Your S3 bucket name
     prefix    = "infra/terraform.tfstate"       # Path to infra's state file
-    region = var.GCP_REGION                    # AWS region
   }
 }
 
@@ -11,9 +9,7 @@ data "terraform_remote_state" "infra" {
 data "terraform_remote_state" "gke" {
   backend = "gcs"
   config = {
-    bucket =  var.GCP_BUCKET_NAME        # Your S3 bucket name
     prefix    = "gke/terraform.tfstate" # Path to EKS state file
-    region = var.GCP_REGION                   # AWS region
   }
 }
 
