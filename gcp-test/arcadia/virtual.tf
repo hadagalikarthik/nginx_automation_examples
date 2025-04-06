@@ -7,7 +7,7 @@ resource "kubernetes_manifest" "arcadia_virtualserver" {
       namespace = "default"
     }
     spec = {
-      host = data.tfe_outputs.gke.values.kubernetes_api_server_url
+      host = data.tfe_outputs.nap.values.external_name
       
       # Reference the WAF policy
       policies = [
