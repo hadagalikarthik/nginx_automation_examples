@@ -208,7 +208,8 @@ jobs:
 
     - name: Terraform Init (GKE)
       run: |
-        terraform init
+        terraform init \
+          -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
       working-directory: ./gcp-test/gke
 
     - name: Print EKS Terraform Outputs
