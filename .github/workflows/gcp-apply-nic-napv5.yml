@@ -31,8 +31,8 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-      - name: Set up Google Cloud Credentials
-        uses: google-github-actions/setup-gcloud@v2
+#      - name: Set up Google Cloud Credentials
+#        uses: google-github-actions/setup-gcloud@v2
 #        with:
 #          project_id: YOUR_PROJECT_ID
 
@@ -82,8 +82,8 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-      - name: Set up Google Cloud Credentials
-        uses: google-github-actions/setup-gcloud@v2
+#      - name: Set up Google Cloud Credentials
+#        uses: google-github-actions/setup-gcloud@v2
 #        with:
 #          project_id: YOUR_PROJECT_ID
 
