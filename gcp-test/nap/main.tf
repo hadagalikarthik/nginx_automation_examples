@@ -19,7 +19,7 @@ provider "google" {
 # }
 
 provider "kubernetes" {
-  host                   = data.tfe_outputs.gke.values.kubernetes_api_server_url
+  host                   = local.host
   cluster_ca_certificate = base64decode(local.cluster_ca_certificate)
   token                  = local.cluster_token
 
@@ -89,7 +89,7 @@ provider "helm" {
 # }
 
 provider "kubectl" {
-    host                    = data.tfe_outputs.gke.values.kubernetes_api_server_url
+    host                    = local.host
     cluster_ca_certificate  = base64decode(local.cluster_ca_certificate)
     token                   = local.cluster_token
     load_config_file        = false

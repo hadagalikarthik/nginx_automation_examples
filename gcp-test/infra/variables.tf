@@ -17,10 +17,6 @@ variable "GCP_PROJECT_ID" {
   type    = string
 }
 
-variable "GCP_BUCKET_NAME" {
-  type    = string
-}
-
 variable "service_account" {
   type    = string
   default = ""

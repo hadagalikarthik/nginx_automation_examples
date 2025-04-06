@@ -1,47 +1,47 @@
-# Read infra state from S3
-# data "terraform_remote_state" "infra" {
-#   backend = "s3"
-#   config = {
-#     bucket =  var.AWS_S3_BUCKET_NAME        # Your S3 bucket namee
-#     key    = "infra/terraform.tfstate"       # Path to infra's state file
-#     region = var.AWS_REGION                      # AWS region
-#   }
-# }
-#
-# # Read eks state from S3
-# data "terraform_remote_state" "eks" {
-#   backend = "s3"
-#   config = {
-#     bucket =  var.AWS_S3_BUCKET_NAME        # Your S3 bucket name
-#     key    = "eks-cluster/terraform.tfstate" # Path to EKS state file
-#     region = var.AWS_REGION                       # AWS region
-#   }
-# }
-#
-# # Read nap state from S3
-# data "terraform_remote_state" "nap" {
-#   backend = "s3"
-#   config = {
-#     bucket =  var.AWS_S3_BUCKET_NAME        # Your S3 bucket name
-#     key    = "nap/terraform.tfstate"         # Path to NAP state file
-#     region = var.AWS_REGION                       # AWS region
-#   }
-# }
-
-data "tfe_outputs" "infra" {
-  organization    = var.tf_cloud_organization
-  workspace       = "infra"
+# Read infra state from gcs
+data "terraform_remote_state" "infra" {
+  backend = "gcs"
+  config = {
+    bucket =  var.GCP_BUCKET_NAME                # Your gcs bucket namee
+    key    = "infra/terraform.tfstate"           # Path to infra state file
+    region = var.GCP_REGION                      # GCP region
+  }
 }
 
-data "tfe_outputs" "gke" {
-  organization    = var.tf_cloud_organization
-  workspace       = "gke"
+# Read gke state from gcs
+data "terraform_remote_state" "gke" {
+  backend = "gcs"
+  config = {
+    bucket =  var.GCP_BUCKET_NAME                 # Your gcs bucket name
+    key    = "gke/terraform.tfstate"              # Path to GKE state file
+    region = var.GCP_REGION                       # GCP region
+  }
 }
 
-data "tfe_outputs" "nap" {
-  organization    = var.tf_cloud_organization
-  workspace       = "nap"
+# Read nap state from gcs
+data "terraform_remote_state" "nap" {
+  backend = "gcs"
+  config = {
+    bucket =  var.GCP_BUCKET_NAME                 # Your gcs bucket name
+    key    = "nap/terraform.tfstate"              # Path to NAP state file
+    region = var.GCP_REGION                       # GCP region
+  }
 }
+# 
+# data "tfe_outputs" "infra" {
+#   organization    = var.tf_cloud_organization
+#   workspace       = "infra"
+# }
+# 
+# data "tfe_outputs" "gke" {
+#   organization    = var.tf_cloud_organization
+#   workspace       = "gke"
+# }
+# 
+# data "tfe_outputs" "nap" {
+#   organization    = var.tf_cloud_organization
+#   workspace       = "nap"
+# }
 
 # Keep existing data sources for Kubernetes
 # data "aws_eks_cluster_auth" "auth" {
