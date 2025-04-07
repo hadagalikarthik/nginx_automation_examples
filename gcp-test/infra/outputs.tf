@@ -30,8 +30,6 @@ output "cidr" {
 	value = var.cidr
 }
 
-output "service_account" {
-	value = var.service_account
-}
-
-
+# output "service_account" {
+# 	value = var.service_account
+# }
