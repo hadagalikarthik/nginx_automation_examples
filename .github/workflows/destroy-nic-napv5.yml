@@ -5,7 +5,6 @@ on:
       - destroy-nic-napv5
   pull_request:
 env:
-#  AWS_REGION: us-east-1
   TF_VAR_AWS_S3_BUCKET_NAME: ${{ secrets.TF_VAR_AWS_S3_BUCKET_NAME }}
   TF_VAR_AWS_REGION: ${{ secrets.TF_VAR_AWS_REGION }}
 jobs:

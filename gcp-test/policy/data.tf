@@ -24,24 +24,3 @@ data "terraform_remote_state" "nap" {
     prefix    = "nap/terraform.tfstate"              # Path to NAP state file
   }
 }
-# 
-# data "tfe_outputs" "infra" {
-#   organization    = var.tf_cloud_organization
-#   workspace       = "infra"
-# }
-# 
-# data "tfe_outputs" "gke" {
-#   organization    = var.tf_cloud_organization
-#   workspace       = "gke"
-# }
-# 
-# data "tfe_outputs" "nap" {
-#   organization    = var.tf_cloud_organization
-#   workspace       = "nap"
-# }
-
-# Keep existing data sources for Kubernetes
-# data "aws_eks_cluster_auth" "auth" {
-#   name = data.terraform_remote_state.eks.outputs.cluster_name
-# }
-

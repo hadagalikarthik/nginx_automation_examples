@@ -41,7 +41,6 @@ resource "google_compute_router_nat" "nat" {
   }
 }
 
-
 # firewall rules
 resource "google_compute_firewall" "allow-ssh" {
   name    = "${var.project_prefix}-ssh-${random_id.build_suffix.hex}"
