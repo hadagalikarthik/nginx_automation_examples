@@ -242,10 +242,16 @@ jobs:
         with:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
-#      - name: Configure gcloud
-#        run: |
-#          echo "${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}" | gcloud auth activate-service-account --key-file=-
-#          gcloud auth activate-service-account --key-file=${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
+      - name: Configure gcloud
+        run: |
+          # Get the credentials file path
+          credentials_file="$GOOGLE_APPLICATION_CREDENTIALS"
+      
+          # Display the file path (for verification)
+          echo "Credentials file path: $credentials_file"
+      
+          # Use it with gcloud
+          gcloud auth activate-service-account --key-file="$credentials_file"
 
 #      - name: Set Bucket Name
 #        id: set_bucket
