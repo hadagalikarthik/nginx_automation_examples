@@ -17,10 +17,10 @@ variable "GCP_PROJECT_ID" {
   type    = string
 }
 
-variable "service_account" {
-  type    = string
-  default = ""
-}
+# variable "service_account" {
+#   type    = string
+#   default = ""
+# }
 
 variable "project_prefix" {
   type        = string

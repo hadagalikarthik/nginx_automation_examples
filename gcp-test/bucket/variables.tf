@@ -20,11 +20,11 @@ variable "GCP_PROJECT_ID" {
 variable "GCP_BUCKET_NAME" {
   type    = string
 }
-
-variable "service_account" {
-  type    = string
-  default = ""
-}
+#
+# variable "service_account" {
+#   type    = string
+#   default = ""
+# }
 
 variable "project_prefix" {
   type        = string
