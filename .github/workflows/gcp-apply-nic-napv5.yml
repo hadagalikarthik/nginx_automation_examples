@@ -1,4 +1,4 @@
-name: "Create GCP Bucket"
+name: "NGINX NIC/NAP-V5 Deployment"
 on:
   push:
     branches: gcp-apply-nic-napv5
@@ -16,7 +16,7 @@ env:
 
 jobs:
   terraform_bootstrap:
-    name: "Create GCP Bucket"
+    name: "GCP Bucket"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -99,7 +99,7 @@ jobs:
         run: terraform apply -auto-approve tfplan
 
   terraform_gke:
-    name: "Deploy GCP GKE"
+    name: "GCP GKE"
     runs-on: ubuntu-latest
     needs: terraform_infra
     defaults:
