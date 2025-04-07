@@ -352,7 +352,7 @@ jobs:
           echo "✅ Verification:"
           
           # Verify GCP bucket
-          BUCKET_NAME="${{ steps.set_bucket.outputs.bucket_name }}"
+          BUCKET_NAME="${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
           if gsutil -q stat "gs://$BUCKET_NAME"; then
             echo "::error::Bucket $BUCKET_NAME still exists!"
             exit 1
