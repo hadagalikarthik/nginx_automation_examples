@@ -223,7 +223,7 @@ jobs:
         run: terraform destroy -auto-approve -input=false -lock=false
 
   
-  terraform_S3:
+  terraform_gcs:
     name: "Delete GCS"
     needs: terraform_infra
     runs-on: ubuntu-latest
@@ -252,55 +252,55 @@ jobs:
           set -e
           BUCKET_NAME="${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
           
-          # 1. Delete all object versions (with null checks)
-          echo "🔥 Deleting ALL object versions..."
-          
-          # List all object versions
-          versions=$(gsutil -q ls -r gs://$BUCKET_NAME/** | while read -r object; do
-            gsutil -q ls -L "$object" | grep "Generation" | awk '{print $2}' | while read -r version; do
-              echo "$object#$version"
-            done
-          done)
-          
-          # Check if there are any versions to delete
-          if [ -n "$versions" ]; then
-            # Delete all versions
-            for version in $versions; do
-              gsutil -m rm -r "$version"
-            done
-          fi
-          
-          # 2. Delete all delete markers (with null checks)
-          echo "🗑️ Deleting ALL delete markers..."
-          
-          # List all object versions (including "deleted" versions)
-          markers_to_delete=$(gsutil -q ls -r gs://$BUCKET_NAME/** | while read -r object; do
-            # Check for versions with generation info (non-current versions)
-            gsutil -q ls -L "$object" | grep "Generation" | awk '{print $2}' | while read -r version; do
-              # Assuming delete markers are versions that are marked with 'generation' but not the current one
-              if gsutil -q stat "$object#$version" 2>/dev/null; then
-                echo "$object#$version"
-              fi
-            done
-          done)
-          
-          # Check if there are any delete markers to delete
-          if [ -n "$markers_to_delete" ]; then
-            for marker in $markers_to_delete; do
-              gsutil -m rm -r "$marker"
-            done
-          fi
-
-          # 3. Force delete any remaining objects
-          echo "💥 Force deleting any remaining objects..."
-          gsutil -m rm -r gs://$BUCKET_NAME/** || true
+#          # 1. Delete all object versions (with null checks)
+#          echo "🔥 Deleting ALL object versions..."
+#
+#          # List all object versions
+#          versions=$(gsutil -q ls -r gs://$BUCKET_NAME/** | while read -r object; do
+#            gsutil -q ls -L "$object" | grep "Generation" | awk '{print $2}' | while read -r version; do
+#              echo "$object#$version"
+#            done
+#          done)
+#
+#          # Check if there are any versions to delete
+#          if [ -n "$versions" ]; then
+#            # Delete all versions
+#            for version in $versions; do
+#              gsutil -m rm -r "$version"
+#            done
+#          fi
+#
+#          # 2. Delete all delete markers (with null checks)
+#          echo "🗑️ Deleting ALL delete markers..."
+#
+#          # List all object versions (including "deleted" versions)
+#          markers_to_delete=$(gsutil -q ls -r gs://$BUCKET_NAME/** | while read -r object; do
+#            # Check for versions with generation info (non-current versions)
+#            gsutil -q ls -L "$object" | grep "Generation" | awk '{print $2}' | while read -r version; do
+#              # Assuming delete markers are versions that are marked with 'generation' but not the current one
+#              if gsutil -q stat "$object#$version" 2>/dev/null; then
+#                echo "$object#$version"
+#              fi
+#            done
+#          done)
+#
+#          # Check if there are any delete markers to delete
+#          if [ -n "$markers_to_delete" ]; then
+#            for marker in $markers_to_delete; do
+#              gsutil -m rm -r "$marker"
+#            done
+#          fi
+#
+#          # 3. Force delete any remaining objects
+#          echo "💥 Force deleting any remaining objects..."
+#          gsutil -m rm -r gs://$BUCKET_NAME/** || true
 
           # 4. Delete bucket
           echo "🚀 Deleting bucket..."
           gsutil rm -r gs://$BUCKET_NAME || true
           
           # 5. Final verification
-          if gsutil -q stat gs://$BUCKET_NAME; then
+          if gsutil -q ls gs://$BUCKET_NAME; then
             echo "::error::Bucket $BUCKET_NAME still exists after deletion attempts!"
             exit 1
           else
