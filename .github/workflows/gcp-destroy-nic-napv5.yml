@@ -247,6 +247,7 @@ jobs:
         run: |
           echo "bucket_name= ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}" >> $GITHUB_OUTPUT
 
+
       - name: GCP Bucket Deletion
         run: |
           set -e
