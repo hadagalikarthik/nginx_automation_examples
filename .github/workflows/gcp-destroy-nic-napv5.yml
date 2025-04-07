@@ -4,12 +4,19 @@ on:
     branches: gcp-destroy-nic-napv5
   pull_request:
 env:
-  TF_VAR_GCP_BUCKET_NAME: ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}
-  TF_VAR_GCP_REGION: ${{ secrets.TF_VAR_GCP_REGION }}
+########### To be set by the user ###########
+#  TF_VAR_GCP_BUCKET_NAME: ${{ secrets.TF_VAR_GCP_BUCKET_NAME }}
+#  TF_VAR_GCP_REGION: ${{ secrets.TF_VAR_GCP_REGION }}
+#  TF_VAR_project_prefix: ${{ secrets.TF_VAR_PROJECT_PREFIX }}
+  TF_VAR_GCP_BUCKET_NAME: "hk-nginx-bucket"
+  TF_VAR_GCP_REGION: "asia-south1"
+  TF_VAR_project_prefix: "hk-new-wf"
+############################################
   TF_VAR_GCP_PROJECT_ID: ${{ secrets.TF_VAR_GCP_PROJECT_ID }}
   TF_VAR_GOOGLE_CREDENTIALS: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
   WORKSPACE_PATH: "./gcp-test/nap"
   nginx_jwt: ${{ secrets.NGINX_JWT }}
+
 jobs:
   terraform_arcadia:
     name: "Destroy Arcadia WebApp"
@@ -33,7 +40,7 @@ jobs:
       - name: Initialize Terraform (GCS Backend)
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 
       - name: Terraform Validate
         run: terraform validate -no-color
@@ -79,7 +86,7 @@ jobs:
       - name: Initialize Terraform (GCS Backend)
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -lock=false
@@ -106,7 +113,7 @@ jobs:
       - name: Initialize Terraform (GCS Backend)
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 
       - name: Terraform Plan (Destroy)
         run: |
@@ -154,7 +161,7 @@ jobs:
       - name: Initialize Terraform (GCS Backend)
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 
       - name: Terraform Plan (Destroy)
         if: github.event_name == 'pull_request' || github.event_name == 'push'
@@ -197,7 +204,7 @@ jobs:
       - name: Initialize Terraform (GCS Backend)
         run: |
           terraform init \
-            -backend-config="bucket=${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+            -backend-config="bucket=$TF_VAR_GCP_BUCKET_NAME"
 
       - name: Terraform Plan (Destroy)
         if: github.event_name == 'pull_request' || github.event_name == 'push'
@@ -239,18 +246,12 @@ jobs:
           credentials_json: ${{ secrets.TF_VAR_GOOGLE_CREDENTIALS }}
 
       - name: Configure gcloud
-        run: |
-          # Get the credentials file path
-          credentials_file="$GOOGLE_APPLICATION_CREDENTIALS"
-          # Display the file path (for verification)
-          echo "Credentials file path: $credentials_file"
-          # Use it with gcloud
-          gcloud auth activate-service-account --key-file="$credentials_file"
+        run: echo "$TF_VAR_GOOGLE_CREDENTIALS" | gcloud auth activate-service-account --key-file=-
 
       - name: GCP Bucket Deletion
         run: |
           set -e
-          BUCKET_NAME="${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+          BUCKET_NAME="$TF_VAR_GCP_BUCKET_NAME"
           
           # 1. Delete all object versions (with null checks)
           echo "🔥 Deleting ALL object versions..."
@@ -352,7 +353,7 @@ jobs:
           echo "✅ Verification:"
           
           # Verify GCP bucket
-          BUCKET_NAME="${{ secrets.TF_VAR_GCP_BUCKET_NAME }}"
+          BUCKET_NAME="$TF_VAR_GCP_BUCKET_NAME"
           if gsutil -q ls "gs://$BUCKET_NAME"; then
             echo "::error::Bucket $BUCKET_NAME still exists!"
             exit 1
