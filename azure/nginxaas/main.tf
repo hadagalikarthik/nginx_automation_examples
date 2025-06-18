@@ -23,8 +23,16 @@ resource "null_resource" "validate_admin_ip" {
   }
 }
 
+# resource "azurerm_resource_provider_registration" "nginx" {
+#   name = "NGINX.NGINXPLUS"
+# }
+
 resource "azurerm_resource_provider_registration" "nginx" {
   name = "NGINX.NGINXPLUS"
+
+  lifecycle {
+    ignore_changes = [name]  # Ignore changes to name in future runs
+  }
 }
 
 resource "time_sleep" "wait_1_minutes" {
