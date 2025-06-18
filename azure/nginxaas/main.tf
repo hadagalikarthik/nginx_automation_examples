@@ -33,10 +33,11 @@ data "external" "nginx_provider_check" {
     "bash", "-c",
     <<-EOT
       PROVIDER_STATUS=$(az provider show --namespace NGINX.NGINXPLUS --query "registrationState" -o tsv)
+      # Output in proper JSON format for Terraform
       if [ "$PROVIDER_STATUS" == "Registered" ]; then
-        echo "{\"is_registered\": true}"
+        echo '{"is_registered": "true"}'
       else
-        echo "{\"is_registered\": false}"
+        echo '{"is_registered": "false"}'
       fi
     EOT
   ]
@@ -45,8 +46,10 @@ data "external" "nginx_provider_check" {
 # Step 2: Conditionally apply the registration resource based on the check
 resource "azurerm_resource_provider_registration" "nginx" {
   count = data.external.nginx_provider_check.result["is_registered"] == "false" ? 1 : 0
+
   name = "NGINX.NGINXPLUS"
 }
+
 
 resource "time_sleep" "wait_1_minutes" {
   depends_on      = [azurerm_resource_provider_registration.nginx]
